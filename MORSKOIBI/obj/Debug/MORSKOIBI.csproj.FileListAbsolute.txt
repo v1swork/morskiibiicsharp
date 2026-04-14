@@ -19,3 +19,4 @@ C:\Users\mokrousov_r\Documents\MORSKOIBI\MORSKOIBI\obj\Debug\MORSKOIBI.csproj.Ge
 C:\Users\mokrousov_r\Documents\MORSKOIBI\MORSKOIBI\obj\Debug\MORSKOIBI.csproj.CoreCompileInputs.cache
 C:\Users\mokrousov_r\Documents\MORSKOIBI\MORSKOIBI\obj\Debug\MORSKOIBI.exe
 C:\Users\mokrousov_r\Documents\MORSKOIBI\MORSKOIBI\obj\Debug\MORSKOIBI.pdb
+C:\Users\mokrousov_r\Documents\MORSKOIBI\MORSKOIBI\obj\Debug\MORSKOIBI.exe.config

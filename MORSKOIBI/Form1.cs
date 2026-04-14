@@ -21,7 +21,7 @@ namespace MORSKOIBI
         // 1 - корабль
         // 2 - попадание
         // 3 - мимо
-         
+        private Random random = new Random();
         public Form1()
         {
             InitializeComponent();
@@ -134,21 +134,20 @@ namespace MORSKOIBI
             PlaceShipForBoard(enemyBoard);
             PlaceShipForBoard(playerBoard);
         }
+        
         private void PlaceShipForBoard(int[,] board)
         {
-            Random random = new Random();
             int[] ships = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
             foreach (int shipSize in ships)
             { 
                 bool placed = false;
-                int row = random.Next(0, 10);
-                int col = random.Next(0, 10);
+               
                 while (!placed)
-                { 
-                    
-
-                    bool horizontal = random.Next(2) == 0;
+                {
+                    int row = this.random.Next(0, 10);
+                    int col = this.random.Next(0, 10);
+                    bool horizontal = this.random.Next(2) == 0;
                     //проверка
                     if (CanPlaceShip(board, row, col, shipSize, horizontal))
                     {
@@ -269,14 +268,12 @@ namespace MORSKOIBI
 
         private void EnemyTurn()
         { 
-            Random random = new Random();
-
             int row, col;
 
             while (true)
             {
-                row = random.Next(0, 10);
-                col = random.Next(0, 10);
+                row = this.random.Next(0, 10);
+                col = this.random.Next(0, 10);
 
                 if (playerBoard[row, col] == 2 || 
                     playerBoard[row, col] == 3)
