@@ -167,29 +167,45 @@ namespace MORSKOIBI
 
         private bool CanPlaceShip(int[,] board, int row, int col, int size, bool horizontal)
         {
-            if (horizontal)
-            {
-                if (col + size > 10)
-                    return false;
+            int endRow = horizontal ? row : row + size - 1;
+            int endCol = horizontal ? col + size - 1 : col;
 
-                for (int i = 0; i < size; i++)
-                {
-                    if (board[row, col + i] != 0)
-                        return false;
-                }
-            }
-            else 
-            {
-                if (row + size > 10)
-                    return false;
+            if (endRow > 9 || endCol > 9)
+                return false;
 
-                for (int i = 0; i < size; i++) 
+
+            for (int r = row - 1; r <= endRow + 1; r++)
+            {
+                for (int c = col - 1; c <= endCol + 1; c++)
                 {
-                    if (board[row + i, col] != 0)
+                    if (r < 0 || r > 9 || c < 0 || c > 9)
+                        continue;
+
+                    if (board[r, c] != 0)
                         return false;
                 }
             }
             return true;
+            //if (horizontal)
+            //{
+            //    for (int i = 0; i < size; i++)
+            //    {
+            //        if (board[row, col + i] != 0)
+            //            return false;
+            //    }
+            //}
+            //else 
+            //{
+            //    if (row + size > 10)
+            //        return false;
+
+            //    for (int i = 0; i < size; i++) 
+            //    {
+            //        if (board[row + i, col] != 0)
+            //            return false;
+            //    }
+            //}
+            //return true;
         }
 
         
