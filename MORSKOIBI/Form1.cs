@@ -349,16 +349,16 @@ namespace MORSKOIBI
             cells.Add(new Point(row, col));
 
             //вверх
-            for (int r = row - 1; r >= 0 && board[r, col] == 1 || board[r, col] == 2; r--)
+            for (int r = row - 1; r >= 0 && (board[r, col] == 1 || board[r, col] == 2); r--)
                 cells.Add(new Point(r, col));
             //вниз
-            for (int r = row + 1; r < 10 && board[r, col] == 1 || board[r, col] == 2; r++)
+            for (int r = row + 1; r < 10 && (board[r, col] == 1 || board[r, col] == 2); r++)
                 cells.Add(new Point(r, col));
             //влево
-            for (int c = col - 1; c >= 0 && board[row, c] == 1 || board[row, c] == 2; c--)
+            for (int c = col - 1; c >= 0 && (board[row, c] == 1 || board[row, c] == 2); c--)
                 cells.Add(new Point(row, c));
             //вправо
-            for (int c = col + 1; c < 10 && board[row, c] == 1 || board[row, c] == 2; c++)
+            for (int c = col + 1; c < 10 && (board[row, c] == 1 || board[row, c] == 2); c++)
                 cells.Add(new Point(row, c));
             return cells;
         }
@@ -385,6 +385,28 @@ namespace MORSKOIBI
                     }
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            playerBoard = new int[10, 10];
+            enemyBoard = new int[10, 10];
+
+            for (int row = 0; row < 10; row++)
+            {
+                for (int col = 0; col < 10; col++)
+                {
+                    playerButtons[row, col].BackColor = SystemColors.Control;
+                    playerButtons[row, col].Text = "";
+
+                    enemyButtons[row, col].BackColor = SystemColors.Control;
+                    enemyButtons[row, col].Text = "";
+                    enemyButtons[row, col].Enabled = true;
+                }
+            }
+            PlaceShip();
+            DrawPlayerShips();
+            labelstatus.Text = "ХОД: ИГРОКА";
         }
     }
 }

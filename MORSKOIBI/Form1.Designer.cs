@@ -31,6 +31,7 @@
             this.PanelPlayer = new System.Windows.Forms.Panel();
             this.PanelEnemy = new System.Windows.Forms.Panel();
             this.labelstatus = new System.Windows.Forms.Label();
+            this.buttonRestart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PanelPlayer
@@ -58,11 +59,22 @@
             this.labelstatus.TabIndex = 2;
             this.labelstatus.Text = "ХОД: ИГРОКА";
             // 
+            // buttonRestart
+            // 
+            this.buttonRestart.Location = new System.Drawing.Point(367, 391);
+            this.buttonRestart.Name = "buttonRestart";
+            this.buttonRestart.Size = new System.Drawing.Size(75, 23);
+            this.buttonRestart.TabIndex = 3;
+            this.buttonRestart.Text = "перезапуск";
+            this.buttonRestart.UseVisualStyleBackColor = true;
+            this.buttonRestart.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.labelstatus);
             this.Controls.Add(this.PanelEnemy);
             this.Controls.Add(this.PanelPlayer);
@@ -79,6 +91,7 @@
         private System.Windows.Forms.Panel PanelPlayer;
         private System.Windows.Forms.Panel PanelEnemy;
         private System.Windows.Forms.Label labelstatus;
+        private System.Windows.Forms.Button buttonRestart;
     }
 }
 
