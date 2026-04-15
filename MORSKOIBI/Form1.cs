@@ -45,7 +45,7 @@ namespace MORSKOIBI
                 playerLetter.AutoSize = false;
                 playerLetter.Size = new Size(cellSize, topMargin);
                 playerLetter.TextAlign = ContentAlignment.MiddleCenter;
-                playerLetter.Location = new Point(leftMargin + i * cellSize,0);
+                playerLetter.Location = new Point(leftMargin + i * cellSize, 0);
                 PanelPlayer.Controls.Add(playerLetter);
 
                 Label enemyLetter = new Label();
@@ -59,9 +59,9 @@ namespace MORSKOIBI
                 Label playerCiferki = new Label();
                 playerCiferki.Text = (i + 1).ToString();
                 playerCiferki.AutoSize = false;
-                playerCiferki.Size = new Size(leftMargin,cellSize);
+                playerCiferki.Size = new Size(leftMargin, cellSize);
                 playerCiferki.TextAlign = ContentAlignment.MiddleCenter;
-                playerCiferki.Location = new Point(0,topMargin + i * cellSize);
+                playerCiferki.Location = new Point(0, topMargin + i * cellSize);
                 PanelPlayer.Controls.Add(playerCiferki);
 
                 Label enemyCiferki = new Label();
@@ -70,14 +70,14 @@ namespace MORSKOIBI
                 enemyCiferki.Size = new Size(leftMargin, cellSize);
                 enemyCiferki.TextAlign = ContentAlignment.MiddleCenter;
                 enemyCiferki.Location = new Point(0, topMargin + i * cellSize);
-                PanelEnemy  .Controls.Add(enemyCiferki);
+                PanelEnemy.Controls.Add(enemyCiferki);
 
 
 
             }
-            for (int row = 0; row <10;row++)
+            for (int row = 0; row < 10; row++)
             {
-                for(int col =0; col < 10;col++)
+                for (int col = 0; col < 10; col++)
                 {
                     Button playerButton = new Button();
                     playerButton.Size = new Size(cellSize, cellSize);
@@ -98,7 +98,7 @@ namespace MORSKOIBI
                     PanelEnemy.Controls.Add(enemyButton);
                     enemyButtons[row, col] = enemyButton;
 
-                } 
+                }
             }
         }
 
@@ -134,15 +134,15 @@ namespace MORSKOIBI
             PlaceShipForBoard(enemyBoard);
             PlaceShipForBoard(playerBoard);
         }
-        
+
         private void PlaceShipForBoard(int[,] board)
         {
             int[] ships = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
             foreach (int shipSize in ships)
-            { 
+            {
                 bool placed = false;
-               
+
                 while (!placed)
                 {
                     int row = this.random.Next(0, 10);
@@ -159,7 +159,7 @@ namespace MORSKOIBI
                                 board[row + i, col] = 1;
                         }
                         placed = true;
-                        
+
                     }
                 }
             }
@@ -208,7 +208,7 @@ namespace MORSKOIBI
             //return true;
         }
 
-        
+
 
         // 1 - 4
         // 2 - 3
@@ -230,11 +230,11 @@ namespace MORSKOIBI
         }
 
         private void enemyButton_Click(object sender, EventArgs e)
-        { 
+        {
             Button clickedButton = (Button)sender;
             Point point = (Point)clickedButton.Tag;
 
-            int row = point.X; 
+            int row = point.X;
             int col = point.Y;
 
             if (enemyBoard[row, col] == 2 || enemyBoard[row, col] == 3)
@@ -247,15 +247,21 @@ namespace MORSKOIBI
                 clickedButton.Text = "X";
                 labelstatus.Text = "Попадание!!!";
 
+                if (IsShipSunk(enemyBoard, row, col))
+                {
+                    MarkAroundSunkShip(enemyBoard, enemyButtons, row, col);
+                    labelstatus.Text = "Убит!";
+                }
+
                 if (CheckWin(enemyBoard))
                 {
                     labelstatus.Text = "Вы победили!";
                     MessageBox.Show("Ты победил");
                 }
             }
-            else 
-            { 
-                playerBoard [row, col] = 3;
+            else
+            {
+                enemyBoard[row, col] = 3;
                 clickedButton.BackColor = Color.White;
                 clickedButton.Text = "*";
                 labelstatus.Text = "Промах!!!";
@@ -264,7 +270,7 @@ namespace MORSKOIBI
             {
                 EnemyTurn();
             }
-            
+
         }
 
         private bool CheckWin(int[,] board)
@@ -283,7 +289,7 @@ namespace MORSKOIBI
         }
 
         private void EnemyTurn()
-        { 
+        {
             int row, col;
 
             while (true)
@@ -291,7 +297,7 @@ namespace MORSKOIBI
                 row = this.random.Next(0, 10);
                 col = this.random.Next(0, 10);
 
-                if (playerBoard[row, col] == 2 || 
+                if (playerBoard[row, col] == 2 ||
                     playerBoard[row, col] == 3)
                     continue;
 
@@ -305,6 +311,12 @@ namespace MORSKOIBI
                 playerButtons[row, col].Text = "X";
                 labelstatus.Text = "Бот попал!";
 
+                if (IsShipSunk(playerBoard, row, col))
+                {
+                    MarkAroundSunkShip(playerBoard, playerButtons, row, col);
+                    labelstatus.Text = "Бот убил ваш корабль!";
+                }
+
                 if (CheckWin(playerBoard))
                 {
                     labelstatus.Text = "Вы проирали!";
@@ -317,6 +329,61 @@ namespace MORSKOIBI
                 playerButtons[row, col].BackColor = Color.White;
                 playerButtons[row, col].Text = "*";
                 labelstatus.Text = "Бот промазал";
+            }
+        }
+
+        private bool IsShipSunk(int[,] board, int row, int col)
+        {
+            List<Point> shipCells = GetShipCells(board, row, col);
+            foreach (Point Cell in shipCells)
+            {
+                if (board[Cell.X, Cell.Y] != 2)
+                    return false;
+            }
+            return true;
+        }
+        
+        private List<Point> GetShipCells(int[,] board, int row, int col)
+        { 
+            List<Point> cells = new List<Point>();
+            cells.Add(new Point(row, col));
+
+            //вверх
+            for (int r = row - 1; r >= 0 && board[r, col] == 1 || board[r, col] == 2; r--)
+                cells.Add(new Point(r, col));
+            //вниз
+            for (int r = row + 1; r < 10 && board[r, col] == 1 || board[r, col] == 2; r++)
+                cells.Add(new Point(r, col));
+            //влево
+            for (int c = col - 1; c >= 0 && board[row, c] == 1 || board[row, c] == 2; c--)
+                cells.Add(new Point(row, c));
+            //вправо
+            for (int c = col + 1; c < 10 && board[row, c] == 1 || board[row, c] == 2; c++)
+                cells.Add(new Point(row, c));
+            return cells;
+        }
+
+        private void MarkAroundSunkShip(int[,] board, Button[,] buttons, int row, int col)
+        {
+            List<Point> shipCells = GetShipCells(board, row, col);
+
+            foreach (Point Cell in shipCells)
+            {
+                for (int r = Cell.X - 1; r <= Cell.X + 1; r++)
+                {
+                    for (int c = Cell.Y - 1; c <= Cell.Y + 1; c++)
+                    {
+                        if (r < 0 || r > 9 || c < 0 || c > 9)
+                            continue;
+
+                        if (board[r, c] == 0)
+                        {
+                            board[r, c] = 3;
+                            buttons[r, c].BackColor = Color.White;
+                            buttons[r, c].Text = "*";
+                        }
+                    }
+                }
             }
         }
     }
